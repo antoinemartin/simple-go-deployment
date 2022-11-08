@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gocmd
+  labels:
+    app: gocmd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gocmd
+  template:
+    metadata:
+      labels:
+        app: gocmd
+    spec:
+      containers:
+        - name: gocmd
+          image: registry.localhost:5000/gocmd:latest
+          ports:
+            - containerPort: 8982
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gocmd
+spec:
+  selector:
+    app: gocmd
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 8982
+  type: LoadBalancer
